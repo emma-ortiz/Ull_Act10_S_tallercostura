@@ -1,0 +1,132 @@
+{% extends "alumnos/base.html" %}
+
+{% block body%}
+        <h3 class="m-4">Todos los Alumnos</h3>
+        <div class="row">
+            <div class="col-12">
+                {% if alumnos %}
+                <div class="card bg-light ms-4 me-4 mb-4">
+                    <div class="card-header">
+                        <i class="fa-solid fa-list-ul fa-lg"></i> Alumnos Registrados
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">Nombre</th>
+                                    <th scope="col">Apellido Paterno</th>
+                                    <th scope="col">Apellido Materno</th>
+                                    <th scope="col">Edad</th>
+                                    <th scope="col">Género</th>
+                                    <th scope="col">Correo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for alumno in alumnos %}
+                                    <tr>
+                                        <td>{{ alumno.nombre }}</td>
+                                        <td>{{ alumno.apellido_paterno }}</td>
+                                        <td>{{ alumno.apellido_materno }}</td>
+                                        <td>{{ alumno.edad }}</td>
+                                        <td>{{ alumno.genero }}</td>
+                                        <td>{{ alumno.correo }}</td>
+                                        <td>
+                                            <button type="button" class="btn btn-success me-1" data-bs-toggle="modal" data-bs-target="#myModal{{alumno.id}}">
+                                                <i class="fa-solid fa-circle-info fa-lg"></i>
+                                            </button>
+                                            
+                                            <div class="modal" id="myModal{{alumno.id}}" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">
+                                                        Alumno: {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}
+                                                    </h5>
+                                                    
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <ul class="list-unstyled">
+                                                        <li>Nombre <strong> {{alumno.nombre}} </strong></li>
+                                                        <li>Apellido Paterno <strong> {{alumno.apellido_paterno}} </strong></li>
+                                                        <li>Apellido Materno <strong> {{alumno.apellido_materno}} </strong></li>
+                                                        <li>Edad <strong> {{alumno.edad}} </strong></li>
+                                                        <li>Género <strong> {{alumno.genero}} </strong></li>
+                                                        <li>Correo <strong> {{alumno.correo}} </strong></li>
+                                                    </ul>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    
+                                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <a class="btn btn-warning me-1" href="{% url 'edit' alumno.id %}">
+                                                <i class="fa-solid fa-user-pen fa-lg"></i>
+                                            </a>
+                                            <button type "button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete{{alumno.id}}">
+                                                <i class="fa-solid fa-trash fa-lg"></i>
+                                            </button>
+
+                                               <div class="modal" id="delete{{alumno.id}}" tabindex="-1" aria-labelledby="myModalLabel2" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">
+                                                        Alumno: {{alumno.nombre}} {{alumno.apellido_paterno}} {{alumno.apellido_materno}}
+                                                    </h5>
+                                                    
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true"></span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                   <p>¿Estás seguro de eliminar a este alumno?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="{% url 'delete' alumno.id %}" method="POST">
+                                                        {%csrf_token%}
+                                                        <input type="submit" class="btn btn-primary" value="Eliminar">   
+                                                    </form>
+                                                    <button type="button" class="btn btn-secundary" data-bs-dismiss="modal">Cerrar</button>
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                                </table>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                {% else %}
+                    <h5 class="alert alert-primary ms-4 me-4">No hay alumnos registrados.</h5>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto mb-4">
+        <div class="text-center">
+            <span>
+                Copyright &copy; 
+                <script>document.write(new Date().getFullYear());</script> Ull - Taller de Costura
+            </span>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+{% endblock%}
